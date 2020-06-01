@@ -1,5 +1,9 @@
 package ufv.tap.backend.repositorio;
 
-public interface RepositorioUsuario {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import ufv.tap.backend.modelo.Usuario;
+
+public interface RepositorioUsuario extends JpaRepository<Usuario, Long>{
 
 }
