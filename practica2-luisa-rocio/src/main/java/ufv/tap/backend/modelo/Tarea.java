@@ -32,7 +32,7 @@ public class Tarea extends EntidadAbstracta{
     
     @NotNull
     @NotEmpty
-    private Date deadline = null;
+    private String deadline = "";
     
     @Enumerated(EnumType.STRING)
     @NotNull
@@ -67,11 +67,11 @@ public class Tarea extends EntidadAbstracta{
 		this.prioridad = prioridad;
 	}
 
-	public Date getDeadline() {
+	public String getDeadline() {
 		return deadline;
 	}
 
-	public void setDeadline(Date deadline) {
+	public void setDeadline(String deadline) {
 		this.deadline = deadline;
 	}
 
