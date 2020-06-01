@@ -1,7 +1,5 @@
 package ufv.tap.backend.modelo;
 
-import java.sql.Date;
-
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -17,6 +15,10 @@ public class Tarea extends EntidadAbstracta{
 	public enum Estado {
         Completada, NoCompletada
     }
+	
+	public enum Prioridad {
+        Alta, Media, Baja
+    }
 
     @NotNull
     @NotEmpty
@@ -26,9 +28,9 @@ public class Tarea extends EntidadAbstracta{
     @NotEmpty
     private String descripcion = "";
     
+    @Enumerated(EnumType.STRING)
     @NotNull
-    @NotEmpty
-    private String prioridad = "";
+    private Tarea.Prioridad prioridad;
     
     @NotNull
     @NotEmpty
@@ -59,11 +61,11 @@ public class Tarea extends EntidadAbstracta{
 		this.descripcion = descripcion;
 	}
 
-	public String getPrioridad() {
+	public Tarea.Prioridad getPrioridad() {
 		return prioridad;
 	}
 
-	public void setPrioridad(String prioridad) {
+	public void setPrioridad(Tarea.Prioridad prioridad) {
 		this.prioridad = prioridad;
 	}
 
