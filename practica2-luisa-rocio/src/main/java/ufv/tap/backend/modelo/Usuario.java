@@ -1,4 +1,4 @@
-package ufv.tap.modelo;
+package ufv.tap.backend.modelo;
 
 public class Usuario {
 

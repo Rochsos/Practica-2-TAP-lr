@@ -1,4 +1,4 @@
-package ufv.tap.vista;
+package ufv.tap.ui.vista;
 
 public class VistaUsuario {
 

@@ -1,4 +1,4 @@
-package ufv.tap.controlador;
+package ufv.tap.backend.controlador;
 
 public class ControladorUsuario {
 

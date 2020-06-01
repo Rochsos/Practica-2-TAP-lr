@@ -1,4 +1,4 @@
-package ufv.tap.repositorio;
+package ufv.tap.backend.repositorio;
 
 public interface RepositorioLista {
 
