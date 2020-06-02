@@ -11,7 +11,7 @@ public class ListaTareas extends EntidadAbstracta {
 
 	private String nombre;
 
-	@OneToMany(mappedBy = "listatareas", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "listaTareas", fetch = FetchType.EAGER)
 	private List<Tarea> tareas = new LinkedList<>();
 
 	public ListaTareas() {

@@ -38,7 +38,6 @@ public class VistaTarea extends VerticalLayout{
 	        setSizeFull();
 	        configureGrid();
 
-
 	        form = new TareaForm(controladorListaTarea.findAll());
 	        form.addListener(TareaForm.SaveEvent.class, this::saveTarea);
 	        form.addListener(TareaForm.DeleteEvent.class, this::deleteTarea);
@@ -86,8 +85,8 @@ public class VistaTarea extends VerticalLayout{
 	private void configureGrid() {
 		grid.addClassName("tarea-grid");
 		grid.setSizeFull();
-		grid.removeColumnByKey("listatarea");
-		grid.setColumns("nombre", "descripcion", "prioridad", "deadline", "estado");
+		grid.removeColumnByKey("listaTareas");
+		grid.setColumns("nombre", "descripcion", "prioridad", "deadline", "estadoTarea");
 		grid.addColumn(tarea -> {
 			ListaTareas listaTareas = tarea.getListaTareas();
 			return listaTareas == null ? "-" : listaTareas.getNombre();
