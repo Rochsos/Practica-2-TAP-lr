@@ -41,8 +41,8 @@ public class Tarea extends EntidadAbstracta{
     private Tarea.Estado estadoTarea;
     
     @ManyToOne
-    @JoinColumn(name = "IdListaTareas")
-    private ListaTareas listaTareas;
+    @JoinColumn(name = "listatareas_id")
+    private ListaTareas listatareas;
 
     
     public String getNombre() {
@@ -86,11 +86,11 @@ public class Tarea extends EntidadAbstracta{
 	}
 
     public ListaTareas getListaTareas() {
-		return listaTareas;
+		return listatareas;
 	}
 
-	public void setListaTareas(ListaTareas listaTareas) {
-		this.listaTareas = listaTareas;
+	public void setListaTareas(ListaTareas listatareas) {
+		this.listatareas = listatareas;
 	}
 
 

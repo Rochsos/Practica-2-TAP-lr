@@ -12,10 +12,10 @@ import com.vaadin.flow.router.HighlightConditions;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.PWA;
 
-import ufv.tap.ui.vista.VistaMenu;
+import ufv.tap.ui.vista.VistaGrafica;
 import ufv.tap.ui.vista.VistaTarea;
 
-@PWA(
+/*@PWA(
 	    name = "Vaadin",
 	    shortName = "TAREA",
 	    offlineResources = {
@@ -23,8 +23,8 @@ import ufv.tap.ui.vista.VistaTarea;
 	        "./images/offline.png"
 	    },
 	    enableInstallPrompt = false
-	)
-	@CssImport("./styles/shared-styles.css")
+	)*/
+@CssImport("./styles/shared-styles.css")
 public class MainLayout extends AppLayout{
 
 	public MainLayout() {
@@ -36,9 +36,9 @@ public class MainLayout extends AppLayout{
         H1 logo = new H1("Vaadin");
         logo.addClassName("logo");
 
-        Anchor logout = new Anchor("/logout", "Log out");
+        //Anchor logout = new Anchor("/logout", "Log out");
 
-        HorizontalLayout header = new HorizontalLayout(new DrawerToggle(), logo, logout);
+        HorizontalLayout header = new HorizontalLayout(new DrawerToggle(), logo);//, logout);
         header.addClassName("header");
         header.setWidth("100%");
         header.expand(logo);
@@ -53,7 +53,7 @@ public class MainLayout extends AppLayout{
 
         addToDrawer(new VerticalLayout(
             listLink,
-            new RouterLink("Menu", VistaMenu.class)
+            new RouterLink("Menu", VistaGrafica.class)
         ));
     }
 }

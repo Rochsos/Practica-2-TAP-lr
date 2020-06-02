@@ -18,12 +18,12 @@ import ufv.tap.ui.MainLayout;
 
 @PageTitle("Menu | Vaadin")
 @Route(value = "menu", layout = MainLayout.class)
-public class VistaMenu extends VerticalLayout{
+public class VistaGrafica extends VerticalLayout{
 
 	private final ControladorTarea controladorTarea;
     private final ControladorListaTarea controladorListaTarea;
 
-    public VistaMenu(ControladorTarea controladorTarea,
+    public VistaGrafica(ControladorTarea controladorTarea,
     		ControladorListaTarea controladorListaTarea) {
         this.controladorTarea = controladorTarea;
         this.controladorListaTarea = controladorListaTarea;
