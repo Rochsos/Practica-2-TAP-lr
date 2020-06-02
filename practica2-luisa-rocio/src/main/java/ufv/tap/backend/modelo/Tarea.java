@@ -1,5 +1,7 @@
 package ufv.tap.backend.modelo;
 
+import java.time.LocalDate;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -13,11 +15,11 @@ public class Tarea extends EntidadAbstracta{
 
 
 	public enum Estado {
-        Completada, NoCompletada
+        completada, noCompletada
     }
 	
 	public enum Prioridad {
-        Alta, Media, Baja
+        alta, media, baja
     }
 
     @NotNull
@@ -32,16 +34,16 @@ public class Tarea extends EntidadAbstracta{
     @NotNull
     private Tarea.Prioridad prioridad;
     
-    @NotNull
+
     @NotEmpty
-    private String deadline = "";
+    private LocalDate deadline = null;
     
     @Enumerated(EnumType.STRING)
     @NotNull
     private Tarea.Estado estadoTarea;
     
     @ManyToOne
-    @JoinColumn(name = "IdListaTareas")
+    @JoinColumn(name = "listatareas_id")
     private ListaTareas listaTareas;
 
     
@@ -69,11 +71,11 @@ public class Tarea extends EntidadAbstracta{
 		this.prioridad = prioridad;
 	}
 
-	public String getDeadline() {
+	public LocalDate getDeadline() {
 		return deadline;
 	}
 
-	public void setDeadline(String deadline) {
+	public void setDeadline(LocalDate deadline) {
 		this.deadline = deadline;
 	}
 
