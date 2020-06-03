@@ -4,8 +4,11 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.Notification.Position;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -26,10 +29,15 @@ import ufv.tap.ui.MainLayout;
 public class VistaTarea extends VerticalLayout {
 
 	TareaForm form;
+	ListaForm formLista;
 	Grid<Tarea> grid = new Grid<>(Tarea.class);
-	TextField filterText = new TextField();
+	TextField filterTarea = new TextField();
+	ComboBox<ListaTareas> filterLista = new ComboBox<>("Buscar tareas por lista...");
+	
+	Notification notification = new Notification("No has añadido una lista aún. Por favor, añadela para poder crear una tarea.", 5000, Position.MIDDLE);
 
 	ControladorTarea controladorTarea;
+	ListaTareas listaTareas = new ListaTareas();
 
 	public VistaTarea(ControladorTarea controladorTarea, ControladorListaTarea controladorListaTarea) {
 		
@@ -43,7 +51,7 @@ public class VistaTarea extends VerticalLayout {
 		form.addListener(TareaForm.DeleteEvent.class, this::deleteTarea);
 		form.addListener(TareaForm.CloseEvent.class, e -> closeEditor());
 
-		Div content = new Div(grid, form);
+		Div content = new Div(grid, form, formLista);
 		content.addClassName("content");
 		content.setSizeFull();
 
@@ -65,39 +73,45 @@ public class VistaTarea extends VerticalLayout {
 	}
 
 	private HorizontalLayout getToolBar() {
-		filterText.setPlaceholder("Filter by name...");
-		filterText.setClearButtonVisible(true);
-		filterText.setValueChangeMode(ValueChangeMode.LAZY);
-		filterText.addValueChangeListener(e -> updateList());
+		filterTarea.setPlaceholder("Buscar tarea por nombre...");
+		filterTarea.setClearButtonVisible(true);
+		filterTarea.setValueChangeMode(ValueChangeMode.LAZY);
+		filterTarea.addValueChangeListener(e -> updateList());
 
-		Button addTareaButton = new Button("Add tarea", click -> addTarea());
+		Button addTareaButton = new Button("Añadir tarea", click -> {
+			if (listaTareas.getTareas().isEmpty())
+				notification.open();
+			else
+				addTarea();
+		});
+		
+		Button addListaButton = new Button("Añadir lista", click -> addLista());
 
-		HorizontalLayout toolbar = new HorizontalLayout(filterText, addTareaButton);
+		HorizontalLayout toolbar = new HorizontalLayout(filterTarea, addTareaButton);
 		toolbar.addClassName("toolbar");
 		return toolbar;
+	}
+
+	private void addLista() {
+		grid.asSingleSelect().clear();
+		editLista(new ListaTareas());
+	}
+
+	private void editLista(ListaTareas listaTareas) {
+		if (listaTareas == null) {
+			closeEditor();
+		} else {
+			formLista.setLista(listaTareas);
+			formLista.setVisible(true);
+			addClassName("editing");
+		}
 	}
 
 	private void addTarea() {
 		grid.asSingleSelect().clear();
 		editTarea(new Tarea());
 	}
-
-	private void configureGrid() {
-
-		grid.addClassName("tarea-grid");
-		grid.setSizeFull();
-		grid.removeColumnByKey("listaTareas");
-		grid.setColumns("nombre", "descripcion", "prioridad", "deadline", "estadoTarea");
-		grid.addColumn(tarea -> {
-			ListaTareas listaTareas = tarea.getListaTareas();
-			return listaTareas == null ? "-" : listaTareas.getNombre();
-		}).setHeader("Lista Tareas");
-
-		grid.getColumns().forEach(col -> col.setAutoWidth(true));
-
-		grid.asSingleSelect().addValueChangeListener(evt -> editTarea(evt.getValue()));
-	}
-
+	
 	private void editTarea(Tarea tarea) {
 		if (tarea == null) {
 			closeEditor();
@@ -108,6 +122,17 @@ public class VistaTarea extends VerticalLayout {
 		}
 	}
 
+	private void configureGrid() {
+
+		grid.addClassName("tarea-grid");
+		grid.setSizeFull();
+		grid.setColumns("nombre", "descripcion", "prioridad", "deadline", "estadoTarea", "listaTareas");
+
+		grid.getColumns().forEach(col -> col.setAutoWidth(true));
+
+		grid.asSingleSelect().addValueChangeListener(evt -> editTarea(evt.getValue()));
+	}
+
 	private void closeEditor() {
 		form.setTarea(null);
 		form.setVisible(false);
@@ -115,6 +140,6 @@ public class VistaTarea extends VerticalLayout {
 	}
 
 	private void updateList() {
-		grid.setItems(controladorTarea.findAll(filterText.getValue()));
+		grid.setItems(controladorTarea.findAll(filterTarea.getValue()));
 	}
 }
