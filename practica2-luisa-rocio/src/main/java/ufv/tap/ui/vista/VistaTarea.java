@@ -23,7 +23,7 @@ import ufv.tap.ui.MainLayout;
 @Scope("prototype")
 @Route(value = "", layout = MainLayout.class)
 @PageTitle("Tareas | Vaadin")
-public class VistaTarea extends VerticalLayout{
+public class VistaTarea extends VerticalLayout {
 
 	TareaForm form;
 	Grid<Tarea> grid = new Grid<>(Tarea.class);
@@ -31,26 +31,26 @@ public class VistaTarea extends VerticalLayout{
 
 	ControladorTarea controladorTarea;
 
-	public VistaTarea(ControladorTarea controladorTarea,
-			ControladorListaTarea controladorListaTarea) {
-	        this.controladorTarea = controladorTarea;
-	        addClassName("list-view");
-	        setSizeFull();
-	        configureGrid();
+	public VistaTarea(ControladorTarea controladorTarea, ControladorListaTarea controladorListaTarea) {
+		
+		this.controladorTarea = controladorTarea;
+		addClassName("list-view");
+		setSizeFull();
+		configureGrid();
 
-	        form = new TareaForm(controladorListaTarea.findAll());
-	        form.addListener(TareaForm.SaveEvent.class, this::saveTarea);
-	        form.addListener(TareaForm.DeleteEvent.class, this::deleteTarea);
-	        form.addListener(TareaForm.CloseEvent.class, e -> closeEditor());
+		form = new TareaForm(controladorListaTarea.findAll());
+		form.addListener(TareaForm.SaveEvent.class, this::saveTarea);
+		form.addListener(TareaForm.DeleteEvent.class, this::deleteTarea);
+		form.addListener(TareaForm.CloseEvent.class, e -> closeEditor());
 
-	        Div content = new Div(grid, form);
-	        content.addClassName("content");
-	        content.setSizeFull();
+		Div content = new Div(grid, form);
+		content.addClassName("content");
+		content.setSizeFull();
 
-	        add(getToolBar(), content);
-	        updateList();
-	        closeEditor();
-	    }
+		add(getToolBar(), content);
+		updateList();
+		closeEditor();
+	}
 
 	private void deleteTarea(TareaForm.DeleteEvent evt) {
 		controladorTarea.delete(evt.getTarea());
@@ -83,6 +83,7 @@ public class VistaTarea extends VerticalLayout{
 	}
 
 	private void configureGrid() {
+
 		grid.addClassName("tarea-grid");
 		grid.setSizeFull();
 		grid.removeColumnByKey("listaTareas");
@@ -90,7 +91,7 @@ public class VistaTarea extends VerticalLayout{
 		grid.addColumn(tarea -> {
 			ListaTareas listaTareas = tarea.getListaTareas();
 			return listaTareas == null ? "-" : listaTareas.getNombre();
-		}).setHeader("Lista");
+		}).setHeader("Lista Tareas");
 
 		grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
