@@ -15,11 +15,11 @@ public class Tarea extends EntidadAbstracta{
 
 
 	public enum Estado {
-        Completada, NoCompletada
+        completada, noCompletada
     }
 	
 	public enum Prioridad {
-        Alta, Media, Baja
+        alta, media, baja
     }
 
     @NotNull
@@ -34,7 +34,7 @@ public class Tarea extends EntidadAbstracta{
     @NotNull
     private Tarea.Prioridad prioridad;
     
-    @NotNull
+
     @NotEmpty
     private LocalDate deadline = null;
     
