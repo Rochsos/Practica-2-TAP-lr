@@ -26,8 +26,8 @@ public class TareaForm extends FormLayout {
 	TextField descripcion = new TextField("Descripcion");
 	ComboBox<Tarea.Prioridad> prioridad = new ComboBox<>("Prioridad");
 	DatePicker deadline = new DatePicker("Fecha límite");
-	ComboBox<Tarea.Estado> estado = new ComboBox<>("Estado");
-	ComboBox<ListaTareas> lista = new ComboBox<>("Lista a la que pertenece");
+	ComboBox<Tarea.Estado> estadoTarea = new ComboBox<>("Estado");
+	ComboBox<ListaTareas> listaTareas = new ComboBox<>("Lista a la que pertenece");
 
 	Button save = new Button("Save");
 	Button delete = new Button("Delete");
@@ -39,11 +39,12 @@ public class TareaForm extends FormLayout {
 		addClassName("tarea-form");
 
 		binder.bindInstanceFields(this);
-		estado.setItems(Tarea.Estado.values());
-		lista.setItems(listas);
-		lista.setItemLabelGenerator(ListaTareas::getNombre);
+		prioridad.setItems(Tarea.Prioridad.values());
+		estadoTarea.setItems(Tarea.Estado.values());
+		listaTareas.setItems(listas);
+		listaTareas.setItemLabelGenerator(ListaTareas::getNombre);
 
-		add(nombre, descripcion, prioridad, deadline, estado, lista, createButtonsLayout());
+		add(nombre, descripcion, prioridad, deadline, estadoTarea, listaTareas, createButtonsLayout());
 	}
 
 	public void setTarea(Tarea tarea) {

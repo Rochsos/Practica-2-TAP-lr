@@ -15,7 +15,7 @@ public class Tarea extends EntidadAbstracta{
 
 
 	public enum Estado {
-        completada, noCompletada
+        completa, incompleta
     }
 	
 	public enum Prioridad {
@@ -34,8 +34,7 @@ public class Tarea extends EntidadAbstracta{
     @NotNull
     private Tarea.Prioridad prioridad;
     
-
-    @NotEmpty
+    @NotNull
     private LocalDate deadline = null;
     
     @Enumerated(EnumType.STRING)
