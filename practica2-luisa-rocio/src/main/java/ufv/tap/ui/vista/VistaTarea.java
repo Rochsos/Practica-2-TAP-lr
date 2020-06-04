@@ -1,5 +1,8 @@
 package ufv.tap.ui.vista;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -37,7 +40,9 @@ public class VistaTarea extends VerticalLayout {
 	Notification notification = new Notification("No has añadido una lista aún. Por favor, añadela para poder crear una tarea.", 5000, Position.MIDDLE);
 
 	ControladorTarea controladorTarea;
+	ControladorListaTarea controladorListaTarea;
 	ListaTareas listaTareas = new ListaTareas();
+	List<ListaTareas> listas = new LinkedList<>();
 
 	public VistaTarea(ControladorTarea controladorTarea, ControladorListaTarea controladorListaTarea) {
 		
@@ -49,34 +54,57 @@ public class VistaTarea extends VerticalLayout {
 		form = new TareaForm(controladorListaTarea.findAll());
 		form.addListener(TareaForm.SaveEvent.class, this::saveTarea);
 		form.addListener(TareaForm.DeleteEvent.class, this::deleteTarea);
-		form.addListener(TareaForm.CloseEvent.class, e -> closeEditor());
+		form.addListener(TareaForm.CloseEvent.class, e -> closeEditorTarea());
+		
+		formLista = new ListaForm(controladorListaTarea.findAll());
+		formLista.addListener(ListaForm.SaveEvent.class, this::saveLista);
+		formLista.addListener(ListaForm.DeleteEvent.class, this::deleteLista);
+		formLista.addListener(ListaForm.CloseEvent.class, e -> closeEditorLista());
 
 		Div content = new Div(grid, form, formLista);
 		content.addClassName("content");
 		content.setSizeFull();
 
 		add(getToolBar(), content);
-		updateList();
-		closeEditor();
+		updateTarea();
+		closeEditorTarea();
+		closeEditorLista();
+	}
+	
+	private void deleteLista(ListaForm.DeleteEvent evt) {
+		controladorListaTarea.delete(evt.getLista());
+		updateComboBox();
+		closeEditorLista();
+	}
+	
+	private void saveLista(ListaForm.SaveEvent evt) {
+		controladorListaTarea.save(evt.getLista());
+		updateComboBox();
+		closeEditorLista();
+	}
+	
+	private void updateComboBox() {
+		filterLista.setItems(listas);
+		filterLista.setItemLabelGenerator(ListaTareas::getNombre);
 	}
 
 	private void deleteTarea(TareaForm.DeleteEvent evt) {
 		controladorTarea.delete(evt.getTarea());
-		updateList();
-		closeEditor();
+		updateTarea();
+		closeEditorTarea();
 	}
 
 	private void saveTarea(TareaForm.SaveEvent evt) {
 		controladorTarea.save(evt.getTarea());
-		updateList();
-		closeEditor();
+		updateTarea();
+		closeEditorTarea();
 	}
 
 	private HorizontalLayout getToolBar() {
-		filterTarea.setPlaceholder("Buscar tarea por nombre...");
+		filterTarea.setLabel("Buscar tareas por nombre...");
 		filterTarea.setClearButtonVisible(true);
 		filterTarea.setValueChangeMode(ValueChangeMode.LAZY);
-		filterTarea.addValueChangeListener(e -> updateList());
+		filterTarea.addValueChangeListener(e -> updateTarea());
 
 		Button addTareaButton = new Button("Añadir tarea", click -> {
 			if (listaTareas.getTareas().isEmpty())
@@ -85,10 +113,22 @@ public class VistaTarea extends VerticalLayout {
 				addTarea();
 		});
 		
+		filterLista.setItems(listas);
+		filterLista.setItemLabelGenerator(ListaTareas::getNombre);
+		filterLista.setClearButtonVisible(true);
+		filterLista.addValueChangeListener(e -> updateList());
+		
 		Button addListaButton = new Button("Añadir lista", click -> addLista());
 
-		HorizontalLayout toolbar = new HorizontalLayout(filterTarea, addTareaButton);
+		HorizontalLayout buscadores = new HorizontalLayout(filterTarea, filterLista);
+		HorizontalLayout botones = new HorizontalLayout(addListaButton, addTareaButton);
+		
+		botones.addClassName("botones");
+		
+		HorizontalLayout toolbar = new HorizontalLayout(buscadores, botones);
+		
 		toolbar.addClassName("toolbar");
+		toolbar.setDefaultVerticalComponentAlignment(Alignment.END);
 		return toolbar;
 	}
 
@@ -99,7 +139,7 @@ public class VistaTarea extends VerticalLayout {
 
 	private void editLista(ListaTareas listaTareas) {
 		if (listaTareas == null) {
-			closeEditor();
+			closeEditorLista();
 		} else {
 			formLista.setLista(listaTareas);
 			formLista.setVisible(true);
@@ -114,7 +154,7 @@ public class VistaTarea extends VerticalLayout {
 	
 	private void editTarea(Tarea tarea) {
 		if (tarea == null) {
-			closeEditor();
+			closeEditorTarea();
 		} else {
 			form.setTarea(tarea);
 			form.setVisible(true);
@@ -133,13 +173,23 @@ public class VistaTarea extends VerticalLayout {
 		grid.asSingleSelect().addValueChangeListener(evt -> editTarea(evt.getValue()));
 	}
 
-	private void closeEditor() {
+	private void closeEditorTarea() {
 		form.setTarea(null);
 		form.setVisible(false);
 		removeClassName("editing");
 	}
+	
+	private void closeEditorLista() {
+		formLista.setLista(null);
+		formLista.setVisible(false);
+		removeClassName("editing");
+	}
 
+	private void updateTarea() {
+		grid.setItems(controladorTarea.findAllTarea(filterTarea.getValue()));
+	}
+	
 	private void updateList() {
-		grid.setItems(controladorTarea.findAll(filterTarea.getValue()));
+		grid.setItems(controladorTarea.findAllLista(filterLista.getValue().toString()));
 	}
 }

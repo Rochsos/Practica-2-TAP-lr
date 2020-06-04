@@ -48,12 +48,12 @@ public class MainLayout extends AppLayout{
     }
 
     private void createDrawer() {
-        RouterLink listLink = new RouterLink("List", VistaTarea.class);
+        RouterLink listLink = new RouterLink("Tareas", VistaTarea.class);
         listLink.setHighlightCondition(HighlightConditions.sameLocation());
 
         addToDrawer(new VerticalLayout(
             listLink,
-            new RouterLink("Menu", VistaGrafica.class)
+            new RouterLink("Grafica de Tareas", VistaGrafica.class)
         ));
     }
 }
