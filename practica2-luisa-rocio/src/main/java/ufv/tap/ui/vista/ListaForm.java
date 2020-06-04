@@ -18,10 +18,12 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.shared.Registration;
 
 import ufv.tap.backend.modelo.ListaTareas;
+import ufv.tap.backend.modelo.Tarea;
 
 public class ListaForm extends FormLayout{
 
 	TextField nombre = new TextField("Nombre de la lista");
+	ComboBox<List<Tarea>> tareas = new ComboBox<>("Tareas");
 
 	Button save = new Button("Save");
 	Button delete = new Button("Delete");
@@ -31,6 +33,8 @@ public class ListaForm extends FormLayout{
 
 	public ListaForm(List<ListaTareas> listas) {
 		addClassName("tarea-form");
+		
+		tareas.setItems();
 
 		binder.bindInstanceFields(this);
 

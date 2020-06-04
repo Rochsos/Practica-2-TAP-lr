@@ -33,11 +33,20 @@ public class ControladorTarea {
 		return repositorioTarea.findAll();
 	}
 
-	public List<Tarea> findAll(String filterText) {
+	public List<Tarea> findAllTarea(String filterText) {
 		if (filterText == null || filterText.isEmpty()) {
 			return repositorioTarea.findAll();
 		} else {
-			return repositorioTarea.search(filterText);
+			return repositorioTarea.searchByName(filterText);
+		}
+	}
+	
+    public List<Tarea> findAllLista(String filterText) {
+		if (filterText == null || filterText.isEmpty()) {
+			return repositorioTarea.findAll();
+		} 
+		else {
+			return repositorioTarea.searchByList(filterText);
 		}
 	}
 
