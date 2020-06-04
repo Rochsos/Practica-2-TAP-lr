@@ -16,6 +16,10 @@ public class ListaTareas extends EntidadAbstracta {
 
 	public ListaTareas() {
 	}
+	
+	public ListaTareas(String nombre) {
+		setNombre(nombre);
+	}
 
 	public String getNombre() {
 		return nombre;
@@ -31,9 +35,5 @@ public class ListaTareas extends EntidadAbstracta {
 
 	public void setTareas(List<Tarea> tareas) {
 		this.tareas = tareas;
-	}
-
-	public ListaTareas(String nombre) {
-		setNombre(nombre);
 	}
 }

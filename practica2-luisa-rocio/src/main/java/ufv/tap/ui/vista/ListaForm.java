@@ -20,35 +20,29 @@ import com.vaadin.flow.shared.Registration;
 import ufv.tap.backend.modelo.ListaTareas;
 import ufv.tap.backend.modelo.Tarea;
 
-public class TareaForm extends FormLayout {
+public class ListaForm extends FormLayout{
 
-	TextField nombre = new TextField("Nombre de la tarea");
-	TextField descripcion = new TextField("Descripcion");
-	ComboBox<Tarea.Prioridad> prioridad = new ComboBox<>("Prioridad");
-	DatePicker deadline = new DatePicker("Fecha límite");
-	ComboBox<Tarea.Estado> estadoTarea = new ComboBox<>("Estado");
-	ComboBox<ListaTareas> listaTareas = new ComboBox<>("Lista a la que pertenece");
+	TextField nombre = new TextField("Nombre de la lista");
+	ComboBox<List<Tarea>> tareas = new ComboBox<>("Tareas");
 
 	Button save = new Button("Save");
 	Button delete = new Button("Delete");
 	Button close = new Button("Cancel");
 
-	Binder<Tarea> binder = new BeanValidationBinder<>(Tarea.class);
+	Binder<ListaTareas> binder = new BeanValidationBinder<>(ListaTareas.class);
 
-	public TareaForm(List<ListaTareas> listas) {
+	public ListaForm(List<ListaTareas> listas) {
 		addClassName("tarea-form");
+		
+		tareas.setItems();
 
 		binder.bindInstanceFields(this);
-		prioridad.setItems(Tarea.Prioridad.values());
-		estadoTarea.setItems(Tarea.Estado.values());
-		listaTareas.setItems(listas);
-		listaTareas.setItemLabelGenerator(ListaTareas::getNombre);
 
-		add(nombre, descripcion, prioridad, deadline, estadoTarea, listaTareas, createButtonsLayout());
+		add(nombre, createButtonsLayout());
 	}
 
-	public void setTarea(Tarea tarea) {
-		binder.setBean(tarea);
+	public void setLista(ListaTareas listaTareas) {
+		binder.setBean(listaTareas);
 	}
 
 	private Component createButtonsLayout() {
@@ -75,34 +69,34 @@ public class TareaForm extends FormLayout {
 	}
 
 	// Events
-	public static abstract class VistaTareaEvent extends ComponentEvent<TareaForm> {
-		private Tarea tarea;
+	public static abstract class VistaTareaEvent extends ComponentEvent<ListaForm> {
+		private ListaTareas listaTareas;
 
-		protected VistaTareaEvent(TareaForm source, Tarea tarea) {
+		protected VistaTareaEvent(ListaForm source, ListaTareas listaTareas) {
 			super(source, false);
-			this.tarea = tarea;
+			this.listaTareas = listaTareas;
 		}
 
-		public Tarea getTarea() {
-			return tarea;
+		public ListaTareas getLista() {
+			return listaTareas;
 		}
 	}
 
 	public static class SaveEvent extends VistaTareaEvent {
-		SaveEvent(TareaForm source, Tarea tarea) {
-			super(source, tarea);
+		SaveEvent(ListaForm source, ListaTareas listaTareas) {
+			super(source, listaTareas);
 		}
 	}
 
 	public static class DeleteEvent extends VistaTareaEvent {
-		DeleteEvent(TareaForm source, Tarea tarea) {
-			super(source, tarea);
+		DeleteEvent(ListaForm source, ListaTareas listaTareas) {
+			super(source, listaTareas);
 		}
 
 	}
 
 	public static class CloseEvent extends VistaTareaEvent {
-		CloseEvent(TareaForm source) {
+		CloseEvent(ListaForm source) {
 			super(source, null);
 		}
 	}
