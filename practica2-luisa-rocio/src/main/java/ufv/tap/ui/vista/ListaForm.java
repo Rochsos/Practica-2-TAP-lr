@@ -56,7 +56,12 @@ public class ListaForm extends FormLayout{
 		close.addClickShortcut(Key.ESCAPE);
 
 		save.addClickListener(click -> validateAndSave());
-		delete.addClickListener(click -> fireEvent(new DeleteEvent(this, binder.getBean())));
+		delete.addClickListener(click -> {
+			nuevaLista.setNombre(nombreLista);
+			nuevaLista.setTareas(null);
+			listas.remove(nuevaLista);
+			fireEvent(new DeleteEvent(this, binder.getBean()));
+		});
 		close.addClickListener(click -> fireEvent(new CloseEvent(this)));
 
 		binder.addStatusChangeListener(evt -> save.setEnabled(binder.isValid()));
