@@ -1,7 +1,6 @@
 package ufv.tap.ui.vista;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.context.annotation.Scope;
@@ -83,12 +82,6 @@ public class VistaTarea extends VerticalLayout {
 		controladorListaTarea.save(evt.getLista());
 		updateComboBox();
 		closeEditorLista();
-	}
-	
-	private void updateComboBox() {
-		listas = formLista.getListas();
-		filterLista.setItems(listas);
-		filterLista.setItemLabelGenerator(ListaTareas::getNombre);
 	}
 
 	private void deleteTarea(TareaForm.DeleteEvent evt) {
@@ -194,5 +187,10 @@ public class VistaTarea extends VerticalLayout {
 	
 	private void updateList() {
 		grid.setItems(controladorTarea.findAllLista(filterLista.getValue().toString()));
+	}
+	
+	private void updateComboBox() {
+		filterLista.setItems(controladorListaTarea.findAll());
+		filterLista.setItemLabelGenerator(ListaTareas::getNombre);
 	}
 }

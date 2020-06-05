@@ -22,8 +22,7 @@ import ufv.tap.backend.modelo.ListaTareas;
 import ufv.tap.backend.modelo.Tarea;
 
 public class ListaForm extends FormLayout{
-	
-	String nombreLista;
+
 	List<ListaTareas> listas = new ArrayList<>();
 	ListaTareas nuevaLista = new ListaTareas();
 
@@ -56,35 +55,18 @@ public class ListaForm extends FormLayout{
 		close.addClickShortcut(Key.ESCAPE);
 
 		save.addClickListener(click -> validateAndSave());
-		delete.addClickListener(click -> {
-			nuevaLista.setNombre(nombreLista);
-			nuevaLista.setTareas(null);
-			listas.remove(nuevaLista);
-			fireEvent(new DeleteEvent(this, binder.getBean()));
-		});
+		delete.addClickListener(click -> fireEvent(new DeleteEvent(this, binder.getBean())));
 		close.addClickListener(click -> fireEvent(new CloseEvent(this)));
 
 		binder.addStatusChangeListener(evt -> save.setEnabled(binder.isValid()));
 
 		return new HorizontalLayout(save, delete, close);
 	}
-	
-	public String getNombreLista() {
-		return nombreLista;
-	}
-	
-	public List<ListaTareas> getListas() {
-		return listas;
-	}
 
 	private void validateAndSave() {
-		if (binder.isValid()) {
-			nombreLista = nombre.getValue();
-			nuevaLista.setNombre(nombreLista);
-			nuevaLista.setTareas(null);
-			listas.add(nuevaLista);
+		if (binder.isValid())
 			fireEvent(new SaveEvent(this, binder.getBean()));
-		}
+			
 	}
 
 	// Events
