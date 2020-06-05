@@ -1,5 +1,6 @@
 package ufv.tap.ui.vista;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -41,22 +42,23 @@ public class VistaTarea extends VerticalLayout {
 
 	ControladorTarea controladorTarea;
 	ControladorListaTarea controladorListaTarea;
-	ListaTareas listaTareas = new ListaTareas();
-	List<ListaTareas> listas = new LinkedList<>();
+	List<ListaTareas> listas = new ArrayList<>();
 
-	public VistaTarea(ControladorTarea controladorTarea, ControladorListaTarea controladorListaTarea) {
+	public VistaTarea(ControladorTarea controlTarea, ControladorListaTarea controlLista) {
 		
-		this.controladorTarea = controladorTarea;
+		this.controladorTarea = controlTarea;
+		this.controladorListaTarea = controlLista;
+		
 		addClassName("list-view");
 		setSizeFull();
 		configureGrid();
 
-		form = new TareaForm(controladorListaTarea.findAll());
+		form = new TareaForm(controlLista.findAll());
 		form.addListener(TareaForm.SaveEvent.class, this::saveTarea);
 		form.addListener(TareaForm.DeleteEvent.class, this::deleteTarea);
 		form.addListener(TareaForm.CloseEvent.class, e -> closeEditorTarea());
 		
-		formLista = new ListaForm(controladorListaTarea.findAll());
+		formLista = new ListaForm();
 		formLista.addListener(ListaForm.SaveEvent.class, this::saveLista);
 		formLista.addListener(ListaForm.DeleteEvent.class, this::deleteLista);
 		formLista.addListener(ListaForm.CloseEvent.class, e -> closeEditorLista());
@@ -84,6 +86,7 @@ public class VistaTarea extends VerticalLayout {
 	}
 	
 	private void updateComboBox() {
+		listas = formLista.getListas();
 		filterLista.setItems(listas);
 		filterLista.setItemLabelGenerator(ListaTareas::getNombre);
 	}
@@ -107,7 +110,7 @@ public class VistaTarea extends VerticalLayout {
 		filterTarea.addValueChangeListener(e -> updateTarea());
 
 		Button addTareaButton = new Button("Añadir tarea", click -> {
-			if (listaTareas.getTareas().isEmpty())
+			if (listas.isEmpty())
 				notification.open();
 			else
 				addTarea();
