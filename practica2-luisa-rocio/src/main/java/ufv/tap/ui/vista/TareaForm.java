@@ -21,7 +21,9 @@ import ufv.tap.backend.modelo.ListaTareas;
 import ufv.tap.backend.modelo.Tarea;
 
 public class TareaForm extends FormLayout {
-
+	
+	ListaForm listaForm = new ListaForm();
+	
 	TextField nombre = new TextField("Nombre de la tarea");
 	TextField descripcion = new TextField("Descripcion");
 	ComboBox<Tarea.Prioridad> prioridad = new ComboBox<>("Prioridad");
@@ -37,7 +39,9 @@ public class TareaForm extends FormLayout {
 
 	public TareaForm(List<ListaTareas> listas) {
 		addClassName("tarea-form");
-
+		
+		listas = listaForm.getListas();
+		
 		binder.bindInstanceFields(this);
 		prioridad.setItems(Tarea.Prioridad.values());
 		estadoTarea.setItems(Tarea.Estado.values());
@@ -75,10 +79,10 @@ public class TareaForm extends FormLayout {
 	}
 
 	// Events
-	public static abstract class VistaTareaEvent extends ComponentEvent<TareaForm> {
+	public static abstract class TareaFormEvent extends ComponentEvent<TareaForm> {
 		private Tarea tarea;
 
-		protected VistaTareaEvent(TareaForm source, Tarea tarea) {
+		protected TareaFormEvent(TareaForm source, Tarea tarea) {
 			super(source, false);
 			this.tarea = tarea;
 		}
@@ -88,20 +92,20 @@ public class TareaForm extends FormLayout {
 		}
 	}
 
-	public static class SaveEvent extends VistaTareaEvent {
+	public static class SaveEvent extends TareaFormEvent {
 		SaveEvent(TareaForm source, Tarea tarea) {
 			super(source, tarea);
 		}
 	}
 
-	public static class DeleteEvent extends VistaTareaEvent {
+	public static class DeleteEvent extends TareaFormEvent {
 		DeleteEvent(TareaForm source, Tarea tarea) {
 			super(source, tarea);
 		}
 
 	}
 
-	public static class CloseEvent extends VistaTareaEvent {
+	public static class CloseEvent extends TareaFormEvent {
 		CloseEvent(TareaForm source) {
 			super(source, null);
 		}
