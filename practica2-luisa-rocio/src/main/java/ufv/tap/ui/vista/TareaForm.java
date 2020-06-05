@@ -17,8 +17,10 @@ import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.shared.Registration;
 
+import ufv.tap.backend.controlador.ControladorListaTarea;
 import ufv.tap.backend.modelo.ListaTareas;
 import ufv.tap.backend.modelo.Tarea;
+import ufv.tap.backend.repositorio.RepositorioLista;
 
 public class TareaForm extends FormLayout {
 	
@@ -36,6 +38,7 @@ public class TareaForm extends FormLayout {
 	Binder<Tarea> binder = new BeanValidationBinder<>(Tarea.class);
 
 	public TareaForm(List<ListaTareas> listas) {
+		
 		addClassName("tarea-form");
 		
 		binder.bindInstanceFields(this);

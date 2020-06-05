@@ -41,7 +41,6 @@ public class VistaTarea extends VerticalLayout {
 
 	ControladorTarea controladorTarea;
 	ControladorListaTarea controladorListaTarea;
-	List<ListaTareas> listas = new ArrayList<>();
 
 	public VistaTarea(ControladorTarea controlTarea, ControladorListaTarea controlLista) {
 		
@@ -103,12 +102,17 @@ public class VistaTarea extends VerticalLayout {
 		filterTarea.addValueChangeListener(e -> updateTarea());
 
 		Button addTareaButton = new Button("Añadir tarea", click -> {
+			
+			List<ListaTareas> listas = new ArrayList<>();
+			listas.addAll(controladorListaTarea.findAll());
+			
 			if (listas.isEmpty())
 				notification.open();
 			else
 				addTarea();
 		});
 		
+		List<ListaTareas> listas = new ArrayList<>();
 		filterLista.setItems(listas);
 		filterLista.setItemLabelGenerator(ListaTareas::getNombre);
 		filterLista.setClearButtonVisible(true);
