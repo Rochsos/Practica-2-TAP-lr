@@ -7,17 +7,21 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
 @Entity
-public class ListaTareas extends EntidadAbstracta{
+public class ListaTareas extends EntidadAbstracta {
 
 	private String nombre;
 
-	  @OneToMany(mappedBy = "lista_tareas", fetch = FetchType.EAGER)
-	  private List<Tarea> tareas = new LinkedList<>();
+	@OneToMany(mappedBy = "listaTareas", fetch = FetchType.EAGER)
+	private List<Tarea> tareas = new LinkedList<>();
 
-	  public ListaTareas() {
-	  }
+	public ListaTareas() {
+	}
+	
+	public ListaTareas(String nombre) {
+		setNombre(nombre);
+	}
 
-	  public String getNombre() {
+	public String getNombre() {
 		return nombre;
 	}
 
@@ -32,8 +36,4 @@ public class ListaTareas extends EntidadAbstracta{
 	public void setTareas(List<Tarea> tareas) {
 		this.tareas = tareas;
 	}
-
-	public ListaTareas(String nombre) {
-	    setNombre(nombre);
-	  }
 }

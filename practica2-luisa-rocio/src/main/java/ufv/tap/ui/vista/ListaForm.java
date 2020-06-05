@@ -1,5 +1,6 @@
 package ufv.tap.ui.vista;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.vaadin.flow.component.Component;
@@ -17,41 +18,32 @@ import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.shared.Registration;
 
-import ufv.tap.backend.controlador.ControladorListaTarea;
 import ufv.tap.backend.modelo.ListaTareas;
 import ufv.tap.backend.modelo.Tarea;
-import ufv.tap.backend.repositorio.RepositorioLista;
 
-public class TareaForm extends FormLayout {
-	
-	TextField nombre = new TextField("Nombre de la tarea");
-	TextField descripcion = new TextField("Descripcion");
-	ComboBox<Tarea.Prioridad> prioridad = new ComboBox<>("Prioridad");
-	DatePicker deadline = new DatePicker("Fecha límite");
-	ComboBox<Tarea.Estado> estadoTarea = new ComboBox<>("Estado");
-	ComboBox<ListaTareas> listaTareas = new ComboBox<>("Lista a la que pertenece");
+public class ListaForm extends FormLayout{
+
+	List<ListaTareas> listas = new ArrayList<>();
+	ListaTareas nuevaLista = new ListaTareas();
+
+	TextField nombre = new TextField("Nombre de la lista");
 
 	Button save = new Button("Save");
 	Button delete = new Button("Delete");
 	Button close = new Button("Cancel");
 
-	Binder<Tarea> binder = new BeanValidationBinder<>(Tarea.class);
+	Binder<ListaTareas> binder = new BeanValidationBinder<>(ListaTareas.class);
 
-	public TareaForm(List<ListaTareas> listas) {
-		
+	public ListaForm() {
 		addClassName("tarea-form");
-		
-		binder.bindInstanceFields(this);
-		prioridad.setItems(Tarea.Prioridad.values());
-		estadoTarea.setItems(Tarea.Estado.values());
-		listaTareas.setItems(listas);
-		listaTareas.setItemLabelGenerator(ListaTareas::getNombre);
 
-		add(nombre, descripcion, prioridad, deadline, estadoTarea, listaTareas, createButtonsLayout());
+		binder.bindInstanceFields(this);
+
+		add(nombre, createButtonsLayout());
 	}
 
-	public void setTarea(Tarea tarea) {
-		binder.setBean(tarea);
+	public void setLista(ListaTareas listaTareas) {
+		binder.setBean(listaTareas);
 	}
 
 	private Component createButtonsLayout() {
@@ -72,40 +64,40 @@ public class TareaForm extends FormLayout {
 	}
 
 	private void validateAndSave() {
-		if (binder.isValid()) {
+		if (binder.isValid())
 			fireEvent(new SaveEvent(this, binder.getBean()));
-		}
+			
 	}
 
 	// Events
-	public static abstract class TareaFormEvent extends ComponentEvent<TareaForm> {
-		private Tarea tarea;
+	public static abstract class ListaFormEvent extends ComponentEvent<ListaForm> {
+		private ListaTareas listaTareas;
 
-		protected TareaFormEvent(TareaForm source, Tarea tarea) {
+		protected ListaFormEvent(ListaForm source, ListaTareas listaTareas) {
 			super(source, false);
-			this.tarea = tarea;
+			this.listaTareas = listaTareas;
 		}
 
-		public Tarea getTarea() {
-			return tarea;
-		}
-	}
-
-	public static class SaveEvent extends TareaFormEvent {
-		SaveEvent(TareaForm source, Tarea tarea) {
-			super(source, tarea);
+		public ListaTareas getLista() {
+			return listaTareas;
 		}
 	}
 
-	public static class DeleteEvent extends TareaFormEvent {
-		DeleteEvent(TareaForm source, Tarea tarea) {
-			super(source, tarea);
+	public static class SaveEvent extends ListaFormEvent {
+		SaveEvent(ListaForm source, ListaTareas listaTareas) {
+			super(source, listaTareas);
+		}
+	}
+
+	public static class DeleteEvent extends ListaFormEvent {
+		DeleteEvent(ListaForm source, ListaTareas listaTareas) {
+			super(source, listaTareas);
 		}
 
 	}
 
-	public static class CloseEvent extends TareaFormEvent {
-		CloseEvent(TareaForm source) {
+	public static class CloseEvent extends ListaFormEvent {
+		CloseEvent(ListaForm source) {
 			super(source, null);
 		}
 	}
