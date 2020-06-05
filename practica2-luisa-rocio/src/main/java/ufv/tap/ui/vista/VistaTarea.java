@@ -37,8 +37,14 @@ public class VistaTarea extends VerticalLayout {
 	TextField filterTarea = new TextField();
 	ComboBox<ListaTareas> filterLista = new ComboBox<>("Buscar tareas por lista...");
 	
-	Notification notification = new Notification("No has añadido una lista aún. Por favor, añadela para poder crear una tarea.", 5000, Position.MIDDLE);
-
+	Notification notificationErrorAddTarea = new Notification("No has añadido una lista aún. Por favor, añadela para poder crear una tarea.", 5000, Position.MIDDLE);
+	Notification notificationErrorSearchLista = new Notification("No has añadido una lista aún.", 5000, Position.MIDDLE);
+	Notification notificationErrorSearchTarea = new Notification("No se encuentra una tarea con ese nombre. Por favor, escriba una tarea correcta.", 5000, Position.MIDDLE);
+	Notification notificationAddLista = new Notification("Lista añadida correctamente. ¡Ya puedes añadir tareas nuevas a esta lista!", 5000, Position.MIDDLE);
+	Notification notificationAddTarea = new Notification("Tarea añadida correctamente.", 5000, Position.MIDDLE);
+	Notification notificationDeleteLista = new Notification("Lista eliminada correctamente.", 5000, Position.MIDDLE);
+	Notification notificationDeleteTarea = new Notification("Tarea eliminada correctamente.", 5000, Position.MIDDLE);
+	
 	ControladorTarea controladorTarea;
 	ControladorListaTarea controladorListaTarea;
 
@@ -74,24 +80,28 @@ public class VistaTarea extends VerticalLayout {
 	private void deleteLista(ListaForm.DeleteEvent evt) {
 		controladorListaTarea.delete(evt.getLista());
 		updateComboBox();
+		notificationDeleteLista.open();
 		closeEditorLista();
 	}
 	
 	private void saveLista(ListaForm.SaveEvent evt) {
 		controladorListaTarea.save(evt.getLista());
 		updateComboBox();
+		notificationAddLista.open();
 		closeEditorLista();
 	}
 
 	private void deleteTarea(TareaForm.DeleteEvent evt) {
 		controladorTarea.delete(evt.getTarea());
 		updateTarea();
+		notificationDeleteTarea.open();
 		closeEditorTarea();
 	}
 
 	private void saveTarea(TareaForm.SaveEvent evt) {
 		controladorTarea.save(evt.getTarea());
 		updateTarea();
+		notificationAddTarea.open();
 		closeEditorTarea();
 	}
 
@@ -107,7 +117,7 @@ public class VistaTarea extends VerticalLayout {
 			listas.addAll(controladorListaTarea.findAll());
 			
 			if (listas.isEmpty())
-				notification.open();
+				notificationErrorAddTarea.open();
 			else
 				addTarea();
 		});
