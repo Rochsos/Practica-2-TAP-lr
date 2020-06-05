@@ -22,8 +22,6 @@ import ufv.tap.backend.modelo.Tarea;
 
 public class TareaForm extends FormLayout {
 	
-	ListaForm listaForm = new ListaForm();
-	
 	TextField nombre = new TextField("Nombre de la tarea");
 	TextField descripcion = new TextField("Descripcion");
 	ComboBox<Tarea.Prioridad> prioridad = new ComboBox<>("Prioridad");
@@ -39,8 +37,6 @@ public class TareaForm extends FormLayout {
 
 	public TareaForm(List<ListaTareas> listas) {
 		addClassName("tarea-form");
-		
-		listas = listaForm.getListas();
 		
 		binder.bindInstanceFields(this);
 		prioridad.setItems(Tarea.Prioridad.values());
