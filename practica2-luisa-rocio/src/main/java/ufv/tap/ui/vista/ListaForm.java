@@ -1,5 +1,6 @@
 package ufv.tap.ui.vista;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.vaadin.flow.component.Component;
@@ -21,9 +22,12 @@ import ufv.tap.backend.modelo.ListaTareas;
 import ufv.tap.backend.modelo.Tarea;
 
 public class ListaForm extends FormLayout{
+	
+	String nombreLista;
+	List<ListaTareas> listas = new ArrayList<>();
+	ListaTareas nuevaLista = new ListaTareas();
 
 	TextField nombre = new TextField("Nombre de la lista");
-	ComboBox<List<Tarea>> tareas = new ComboBox<>("Tareas");
 
 	Button save = new Button("Save");
 	Button delete = new Button("Delete");
@@ -31,10 +35,8 @@ public class ListaForm extends FormLayout{
 
 	Binder<ListaTareas> binder = new BeanValidationBinder<>(ListaTareas.class);
 
-	public ListaForm(List<ListaTareas> listas) {
+	public ListaForm() {
 		addClassName("tarea-form");
-		
-		tareas.setItems();
 
 		binder.bindInstanceFields(this);
 
@@ -61,18 +63,30 @@ public class ListaForm extends FormLayout{
 
 		return new HorizontalLayout(save, delete, close);
 	}
+	
+	public String getNombreLista() {
+		return nombreLista;
+	}
+	
+	public List<ListaTareas> getListas() {
+		return listas;
+	}
 
 	private void validateAndSave() {
 		if (binder.isValid()) {
+			nombreLista = nombre.getValue();
+			nuevaLista.setNombre(nombreLista);
+			nuevaLista.setTareas(null);
+			listas.add(nuevaLista);
 			fireEvent(new SaveEvent(this, binder.getBean()));
 		}
 	}
 
 	// Events
-	public static abstract class VistaTareaEvent extends ComponentEvent<ListaForm> {
+	public static abstract class ListaFormEvent extends ComponentEvent<ListaForm> {
 		private ListaTareas listaTareas;
 
-		protected VistaTareaEvent(ListaForm source, ListaTareas listaTareas) {
+		protected ListaFormEvent(ListaForm source, ListaTareas listaTareas) {
 			super(source, false);
 			this.listaTareas = listaTareas;
 		}
@@ -82,20 +96,20 @@ public class ListaForm extends FormLayout{
 		}
 	}
 
-	public static class SaveEvent extends VistaTareaEvent {
+	public static class SaveEvent extends ListaFormEvent {
 		SaveEvent(ListaForm source, ListaTareas listaTareas) {
 			super(source, listaTareas);
 		}
 	}
 
-	public static class DeleteEvent extends VistaTareaEvent {
+	public static class DeleteEvent extends ListaFormEvent {
 		DeleteEvent(ListaForm source, ListaTareas listaTareas) {
 			super(source, listaTareas);
 		}
 
 	}
 
-	public static class CloseEvent extends VistaTareaEvent {
+	public static class CloseEvent extends ListaFormEvent {
 		CloseEvent(ListaForm source) {
 			super(source, null);
 		}
