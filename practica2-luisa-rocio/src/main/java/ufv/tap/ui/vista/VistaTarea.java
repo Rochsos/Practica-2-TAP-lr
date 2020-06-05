@@ -168,6 +168,7 @@ public class VistaTarea extends VerticalLayout {
 		} else {
 			form.setTarea(tarea);
 			form.setVisible(true);
+			form.setComboBox(controladorListaTarea.findAll());
 			addClassName("editing");
 		}
 	}
@@ -176,8 +177,13 @@ public class VistaTarea extends VerticalLayout {
 
 		grid.addClassName("tarea-grid");
 		grid.setSizeFull();
-		grid.setColumns("nombre", "descripcion", "prioridad", "deadline", "estadoTarea", "listaTareas");
-
+		grid.removeColumnByKey("listaTareas");
+		grid.setColumns("nombre", "descripcion", "prioridad", "deadline", "estadoTarea");
+		grid.addColumn(tarea -> {
+			ListaTareas listaTareas = tarea.getListaTareas();
+			return listaTareas == null ? "-" : listaTareas.getNombre();
+		}).setHeader("Lista Tareas");
+		
 		grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
 		grid.asSingleSelect().addValueChangeListener(evt -> editTarea(evt.getValue()));

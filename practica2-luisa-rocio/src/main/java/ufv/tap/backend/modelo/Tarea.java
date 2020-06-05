@@ -42,6 +42,7 @@ public class Tarea extends EntidadAbstracta{
     @NotNull
     private Tarea.Estado estadoTarea;
     
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "listatareas_id")
     private ListaTareas listaTareas;

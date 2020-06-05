@@ -49,6 +49,12 @@ public class TareaForm extends FormLayout {
 
 		add(nombre, descripcion, prioridad, deadline, estadoTarea, listaTareas, createButtonsLayout());
 	}
+	
+	public void setComboBox(List<ListaTareas> listas) {
+		listaTareas.clear();
+		listaTareas.setItems(listas);
+		listaTareas.setItemLabelGenerator(ListaTareas::getNombre);
+	}
 
 	public void setTarea(Tarea tarea) {
 		binder.setBean(tarea);
