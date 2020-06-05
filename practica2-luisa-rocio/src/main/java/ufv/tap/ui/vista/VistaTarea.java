@@ -126,7 +126,10 @@ public class VistaTarea extends VerticalLayout {
 		filterLista.setItems(listas);
 		filterLista.setItemLabelGenerator(ListaTareas::getNombre);
 		filterLista.setClearButtonVisible(true);
-		filterLista.addValueChangeListener(e -> updateList());
+		filterLista.addValueChangeListener(e -> {
+			editLista(e.getValue());
+			updateList();
+		});
 		
 		Button addListaButton = new Button("Añadir lista", click -> addLista());
 
@@ -206,7 +209,7 @@ public class VistaTarea extends VerticalLayout {
 	}
 	
 	private void updateList() {
-		grid.setItems(controladorTarea.findAllLista(filterLista.getValue().toString()));
+		grid.setItems(controladorTarea.findAllLista(filterLista.getValue()));
 	}
 	
 	private void updateComboBox() {
