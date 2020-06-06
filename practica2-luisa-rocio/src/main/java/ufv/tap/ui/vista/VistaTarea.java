@@ -44,6 +44,7 @@ public class VistaTarea extends VerticalLayout {
 	Notification notificationAddTarea = new Notification("Tarea añadida correctamente.", 5000, Position.MIDDLE);
 	Notification notificationDeleteLista = new Notification("Lista eliminada correctamente.", 5000, Position.MIDDLE);
 	Notification notificationDeleteTarea = new Notification("Tarea eliminada correctamente.", 5000, Position.MIDDLE);
+	Notification notificationListaTarea = new Notification("No se puede eliminar la lista porque tiene tareas asignadas. Primero elimina las tarea y luego la lista.", 5000, Position.MIDDLE);
 	
 	ControladorTarea controladorTarea;
 	ControladorListaTarea controladorListaTarea;
@@ -78,10 +79,18 @@ public class VistaTarea extends VerticalLayout {
 	}
 	
 	private void deleteLista(ListaForm.DeleteEvent evt) {
-		controladorListaTarea.delete(evt.getLista());
-		updateComboBox();
-		notificationDeleteLista.open();
-		closeEditorLista();
+		
+		if(evt.getLista().getTareas().size() != 0) {
+			notificationListaTarea.open();
+			return;
+		}
+		
+		else {
+			controladorListaTarea.delete(evt.getLista());
+			updateComboBox();
+			notificationDeleteLista.open();
+			closeEditorLista();
+		}
 	}
 	
 	private void saveLista(ListaForm.SaveEvent evt) {
@@ -126,7 +135,10 @@ public class VistaTarea extends VerticalLayout {
 		filterLista.setItems(listas);
 		filterLista.setItemLabelGenerator(ListaTareas::getNombre);
 		filterLista.setClearButtonVisible(true);
-		filterLista.addValueChangeListener(e -> updateList());
+		filterLista.addValueChangeListener(e -> {
+			editLista(e.getValue());
+			updateList();
+		});
 		
 		Button addListaButton = new Button("Añadir lista", click -> addLista());
 
@@ -206,7 +218,7 @@ public class VistaTarea extends VerticalLayout {
 	}
 	
 	private void updateList() {
-		grid.setItems(controladorTarea.findAllLista(filterLista.getValue().toString()));
+		grid.setItems(controladorTarea.findAllLista(filterLista.getValue()));
 	}
 	
 	private void updateComboBox() {

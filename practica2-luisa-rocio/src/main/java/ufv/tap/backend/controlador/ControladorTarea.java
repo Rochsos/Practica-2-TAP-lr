@@ -41,12 +41,12 @@ public class ControladorTarea {
 		}
 	}
 	
-    public List<Tarea> findAllLista(String filterText) {
-		if (filterText == null || filterText.isEmpty()) {
+    public List<Tarea> findAllLista(ListaTareas lista) {
+		if (lista == null) {
 			return repositorioTarea.findAll();
 		} 
 		else {
-			return repositorioTarea.searchByList(filterText);
+			return repositorioTarea.searchByList(lista);
 		}
 	}
 
