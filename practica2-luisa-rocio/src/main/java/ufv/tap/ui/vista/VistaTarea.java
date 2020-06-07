@@ -132,6 +132,7 @@ public class VistaTarea extends VerticalLayout {
 		});
 		
 		List<ListaTareas> listas = new ArrayList<>();
+		listas.addAll(controladorListaTarea.findAll());
 		filterLista.setItems(listas);
 		filterLista.setItemLabelGenerator(ListaTareas::getNombre);
 		filterLista.setClearButtonVisible(true);
