@@ -15,15 +15,7 @@ import com.vaadin.flow.router.RouterLink;
 import ufv.tap.ui.vista.VistaGrafica;
 import ufv.tap.ui.vista.VistaTarea;
 
-/*@PWA(
-	    name = "Vaadin",
-	    shortName = "TAREA",
-	    offlineResources = {
-	        "./styles/offline.css",
-	        "./images/offline.png"
-	    },
-	    enableInstallPrompt = false
-	)*/
+
 @CssImport("./styles/shared-styles.css")
 public class MainLayout extends AppLayout{
 
@@ -35,8 +27,6 @@ public class MainLayout extends AppLayout{
     private void createHeader() {
         H1 logo = new H1("Vaadin");
         logo.addClassName("logo");
-
-        //Anchor logout = new Anchor("/logout", "Log out");
 
         HorizontalLayout header = new HorizontalLayout(new DrawerToggle(), logo);//, logout);
         header.addClassName("header");
