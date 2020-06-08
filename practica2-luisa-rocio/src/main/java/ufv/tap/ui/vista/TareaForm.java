@@ -16,14 +16,15 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.shared.Registration;
-
-import ufv.tap.backend.controlador.ControladorListaTarea;
 import ufv.tap.backend.modelo.ListaTareas;
 import ufv.tap.backend.modelo.Tarea;
-import ufv.tap.backend.repositorio.RepositorioLista;
 
 public class TareaForm extends FormLayout {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	TextField nombre = new TextField("Nombre de la tarea");
 	TextField descripcion = new TextField("Descripcion");
 	ComboBox<Tarea.Prioridad> prioridad = new ComboBox<>("Prioridad");
@@ -84,7 +85,11 @@ public class TareaForm extends FormLayout {
 	}
 
 	// Events
-	public static abstract class TareaFormEvent extends ComponentEvent<TareaForm> {
+	public static class TareaFormEvent extends ComponentEvent<TareaForm> {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		private Tarea tarea;
 
 		protected TareaFormEvent(TareaForm source, Tarea tarea) {
@@ -98,12 +103,22 @@ public class TareaForm extends FormLayout {
 	}
 
 	public static class SaveEvent extends TareaFormEvent {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		SaveEvent(TareaForm source, Tarea tarea) {
 			super(source, tarea);
 		}
 	}
 
 	public static class DeleteEvent extends TareaFormEvent {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		DeleteEvent(TareaForm source, Tarea tarea) {
 			super(source, tarea);
 		}
@@ -111,11 +126,17 @@ public class TareaForm extends FormLayout {
 	}
 
 	public static class CloseEvent extends TareaFormEvent {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		CloseEvent(TareaForm source) {
 			super(source, null);
 		}
 	}
 
+	@Override
 	public <T extends ComponentEvent<?>> Registration addListener(Class<T> eventType,
 			ComponentEventListener<T> listener) {
 		return getEventBus().addListener(eventType, listener);

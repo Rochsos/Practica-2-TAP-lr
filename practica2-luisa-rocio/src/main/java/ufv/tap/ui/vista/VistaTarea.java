@@ -31,6 +31,10 @@ import ufv.tap.ui.MainLayout;
 @PageTitle("Tareas | Vaadin")
 public class VistaTarea extends VerticalLayout {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	TareaForm form;
 	ListaForm formLista;
 	Grid<Tarea> grid = new Grid<>(Tarea.class);
@@ -80,9 +84,8 @@ public class VistaTarea extends VerticalLayout {
 	
 	private void deleteLista(ListaForm.DeleteEvent evt) {
 		
-		if(evt.getLista().getTareas().size() != 0) {
+		if(! evt.getLista().getTareas().isEmpty()) {
 			notificationListaTarea.open();
-			return;
 		}
 		
 		else {
