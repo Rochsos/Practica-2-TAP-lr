@@ -1,7 +1,5 @@
 package ufv.tap.ui.vista;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEvent;
@@ -9,8 +7,6 @@ import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.combobox.ComboBox;
-import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -19,15 +15,14 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.shared.Registration;
 
 import ufv.tap.backend.modelo.ListaTareas;
-import ufv.tap.backend.modelo.Tarea;
 
 public class ListaForm extends FormLayout{
 
-	List<ListaTareas> listas = new ArrayList<>();
-	ListaTareas nuevaLista = new ListaTareas();
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	TextField nombre = new TextField("Nombre de la lista");
-
 	Button save = new Button("Save");
 	Button delete = new Button("Delete");
 	Button close = new Button("Cancel");
@@ -70,7 +65,11 @@ public class ListaForm extends FormLayout{
 	}
 
 	// Events
-	public static abstract class ListaFormEvent extends ComponentEvent<ListaForm> {
+	public static class ListaFormEvent extends ComponentEvent<ListaForm> {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		private ListaTareas listaTareas;
 
 		protected ListaFormEvent(ListaForm source, ListaTareas listaTareas) {
@@ -84,12 +83,22 @@ public class ListaForm extends FormLayout{
 	}
 
 	public static class SaveEvent extends ListaFormEvent {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		SaveEvent(ListaForm source, ListaTareas listaTareas) {
 			super(source, listaTareas);
 		}
 	}
 
 	public static class DeleteEvent extends ListaFormEvent {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		DeleteEvent(ListaForm source, ListaTareas listaTareas) {
 			super(source, listaTareas);
 		}
@@ -97,11 +106,17 @@ public class ListaForm extends FormLayout{
 	}
 
 	public static class CloseEvent extends ListaFormEvent {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		CloseEvent(ListaForm source) {
 			super(source, null);
 		}
 	}
 
+	@Override
 	public <T extends ComponentEvent<?>> Registration addListener(Class<T> eventType,
 			ComponentEventListener<T> listener) {
 		return getEventBus().addListener(eventType, listener);

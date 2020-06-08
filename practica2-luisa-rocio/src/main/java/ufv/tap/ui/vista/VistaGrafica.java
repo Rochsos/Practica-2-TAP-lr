@@ -20,6 +20,10 @@ import ufv.tap.ui.MainLayout;
 @Route(value = "menu", layout = MainLayout.class)
 public class VistaGrafica extends VerticalLayout{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final ControladorTarea controladorTarea;
     private final ControladorListaTarea controladorListaTarea;
 

@@ -9,7 +9,6 @@ import java.util.logging.Logger;
 import org.springframework.stereotype.Service;
 
 import ufv.tap.backend.modelo.ListaTareas;
-import ufv.tap.backend.modelo.Tarea;
 import ufv.tap.backend.repositorio.RepositorioLista;
 
 @Service
